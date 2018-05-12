@@ -21,5 +21,8 @@ Read the API documentation in Swagger2
 
 Upload API URL - http://localhost:8080/fileapi/v1/upload
 
+Download API URL - http://localhost:8080/fileapi/v1/download/{fileName}
+Note: It download the file from upload location...give the same file name 
+
 To view the logs
 Navigate to the project folder - /log/fileapi.log
