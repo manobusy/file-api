@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fileapi.dao.FileOperationDAO;
+import com.fileapi.dto.FileMetaData;
 import com.fileapi.exception.FileNotFoundException;
 import com.fileapi.exception.FileOperationException;
 import com.fileapi.property.FileOperationProperties;
@@ -22,6 +26,9 @@ import com.fileapi.property.FileOperationProperties;
 public class FileOperationServiceImpl implements FileOperationService{
 	
 	private final Path fileSaveLocation;
+	
+	@Autowired
+	private FileOperationDAO fileOperationDAO;
 
     @Autowired
     public FileOperationServiceImpl(FileOperationProperties fileOperationProperties) {
@@ -71,4 +78,30 @@ public class FileOperationServiceImpl implements FileOperationService{
         }
 	}
 
+	@Override
+	public boolean saveFileMetaData(FileMetaData fileMetaData) throws FileOperationException {
+		try{
+			fileOperationDAO.save(fileMetaData);
+			return true;
+		} catch (Exception ex){
+			throw new FileOperationException("Could not save file " + fileMetaData.getFileName() + ". ", ex);
+		}
+	}
+
+	//Find All - Parallel Stream
+	@Override
+	public List<FileMetaData> getAllFileMetaData() throws FileOperationException {
+		List<FileMetaData> fileMetaDatas = fileOperationDAO.findAll();
+		fileMetaDatas.parallelStream()
+		.collect(Collectors.toList());
+		return fileMetaDatas;
+	}
+	
+	//Find FileMetaData by Id
+	@Override
+	public FileMetaData getFileMetaDataById(String id) throws FileOperationException {
+		FileMetaData fileMetaData = fileOperationDAO.findById(id);
+		return fileMetaData;
+	}
+	
 }

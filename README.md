@@ -22,7 +22,14 @@ Read the API documentation in Swagger2
 Upload API URL - http://localhost:8080/fileapi/v1/upload
 
 Download API URL - http://localhost:8080/fileapi/v1/download/{fileName}
-Note: It download the file from upload location...give the same file name 
+Note: It download the file from upload location...give the same file name. Also try to run from browser not swagger-ui to dowonload the file
+
+FileMetaDatas API URL - http://localhost:8080/fileapi/v1/filemetadatas
+
+FileMetaData by Id API URL - http://localhost:8080/fileapi/v1/filemetadata/id
+Note: Get the id from the above URL output.
+
+Also whenever application is re-run it will be clean up the DB records. Retry with upload service and then trigger find all or find by id
 
 To view the logs
 Navigate to the project folder - /log/fileapi.log

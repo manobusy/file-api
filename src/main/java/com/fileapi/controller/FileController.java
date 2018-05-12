@@ -1,6 +1,7 @@
 package com.fileapi.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fileapi.dto.FileMetaData;
+import com.fileapi.exception.FileOperationException;
 import com.fileapi.response.FileUploadResponse;
 import com.fileapi.service.FileOperationService;
 
@@ -39,12 +41,34 @@ public class FileController {
 	
 	@PostMapping("/upload")
     public FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        
+        //Upload the file to specified location
 		String fileName = fileOperationService.saveFile(file);
-
+		
+		//Save the file into DB
+		saveFileIntoDB(file);
+		
+		//Return the response
         return new FileUploadResponse(fileName, file.getContentType(), file.getSize());
     }
 	
+	private boolean saveFileIntoDB(MultipartFile file) {
+		FileMetaData fileMetaData = new FileMetaData();
+		
+		fileMetaData.setFileName(file.getName());
+		fileMetaData.setFileContentType(file.getContentType());
+		fileMetaData.setFileSize(file.getSize());
+		
+		boolean saveStatus = fileOperationService.saveFileMetaData(fileMetaData);
+		
+		//Save DB status logging
+		if(saveStatus){
+			log.info("File Meta Data Saved successfully");
+		}else{
+			log.info("File Meta Data Not Saved successfully");
+		}
+		return saveStatus;
+	}
+
 	@GetMapping("/download/{fileName:.+}")
  	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
@@ -68,4 +92,14 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+	
+	@GetMapping(value = "/filemetadatas")
+	public List<FileMetaData> getAllFileMetaData() throws FileOperationException{
+		return fileOperationService.getAllFileMetaData();
+	}
+	
+	@GetMapping(value = "/filemetadata/{id}")
+	public FileMetaData getProductById(@PathVariable("id") String id) throws FileOperationException{
+		return fileOperationService.getFileMetaDataById(id);
+	}
 }

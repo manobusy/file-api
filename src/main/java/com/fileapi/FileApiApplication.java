@@ -11,7 +11,6 @@ import com.fileapi.property.FileOperationProperties;
     FileOperationProperties.class
 })
 public class FileApiApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(FileApiApplication.class, args);
 	}
