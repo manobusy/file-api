@@ -63,9 +63,8 @@ public class FileController {
 		//Save DB status logging
 		if(saveStatus){
 			log.info("File Meta Data Saved successfully");
-		}else{
-			log.info("File Meta Data Not Saved successfully");
 		}
+		
 		return saveStatus;
 	}
 

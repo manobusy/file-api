@@ -9,6 +9,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,6 +26,8 @@ import com.fileapi.property.FileOperationProperties;
 
 @Service
 public class FileOperationServiceImpl implements FileOperationService{
+	
+	private static final Logger log = LoggerFactory.getLogger(DataLoaderService.class);
 	
 	private final Path fileSaveLocation;
 	
@@ -84,6 +88,7 @@ public class FileOperationServiceImpl implements FileOperationService{
 			fileOperationDAO.save(fileMetaData);
 			return true;
 		} catch (Exception ex){
+			log.info("File Meta Data Not Saved successfully");
 			throw new FileOperationException("Could not save file " + fileMetaData.getFileName() + ". ", ex);
 		}
 	}
