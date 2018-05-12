@@ -17,7 +17,9 @@ Download project from the following git repository https://github.com/manobusy/f
 To run the application:
 Download the project. Navigate to the project folder and run mvn spring-boot:run 
 Read the API documentation in Swagger2 
-(run http://localhost:8080/swagger-ui.html on the browser)
+(run http://localhost:8080/swagger-ui.html on the browser and try to do the file operation)
+
+Upload API URL - http://localhost:8080/fileapi/v1/upload
 
 To view the logs
 Navigate to the project folder - /log/fileapi.log
