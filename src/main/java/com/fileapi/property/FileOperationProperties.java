@@ -1,4 +1,4 @@
-package com.java.fileapi.property;
+package com.fileapi.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

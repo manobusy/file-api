@@ -1,4 +1,4 @@
-package com.java.fileapi.exception;
+package com.fileapi.exception;
 
 public class FileNotFoundException {
 

@@ -1,4 +1,4 @@
-package com.java.fileapi.service;
+package com.fileapi.service;
 
 public class FileOperationService {
 
